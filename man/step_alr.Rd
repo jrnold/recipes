@@ -48,9 +48,14 @@ selectors or variables selected) and \code{value} (the means).
 }
 \description{
 \code{step_alr} creates a \emph{specification} of a recipe
-step that will normalize numeric data to have a mean of zero.
+step that will transform a dataset of compositions using the
+additive log ratio (ALR) transform.
 }
 \details{
+The ALR transform maps a composition of a $D$ simplex into
+a $D - 1$ Euclidian vector. The alr is given by,
+\deqn{\mathrm{alr}(x)_i = \log \left(\frac{x_i}{x_D} \right)}{alr(x)_i = log(x_i / x_D)} .
+
 ilring data means that the average of a variable is
 subtracted from the data. \code{step_alr} estimates the
 variable means from the data used in the \code{training}

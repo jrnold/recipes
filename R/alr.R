@@ -1,7 +1,10 @@
 #' Additive Log Ratio Transformation of Compositional Data
 #'
 #' `step_alr` creates a *specification* of a recipe
-#'  step that will normalize numeric data to have a mean of zero.
+#'  step that will transform a dataset of compositions using the
+#'  additive log ratio (ALR) transform.
+#'
+
 #'
 #' @param recipe A recipe object. The step will be added to the
 #'  sequence of operations for this recipe.
@@ -13,10 +16,8 @@
 #'  created.
 #' @param trained A logical to indicate if the quantities for
 #'  preprocessing have been estimated.
-#' @param means A named numeric vector of means. This is
+#' @param ivar The name of the column to be used as denominator variable. If unspecified, the last variable is used. This is
 #'  `NULL` until computed by [prep.recipe()].
-#' @param na.rm A logical value indicating whether `NA`
-#'  values should be removed during computations.
 #' @param skip A logical. Should the step be skipped when the
 #'  recipe is baked by [bake.recipe()]? While all operations are baked
 #'  when [prep.recipe()] is run, some operations may not be able to be
@@ -31,17 +32,16 @@
 #' @keywords datagen
 #' @concept preprocessing normalization_methods
 #' @export
-#' @details ilring data means that the average of a variable is
-#'  subtracted from the data. `step_alr` estimates the
-#'  variable means from the data used in the `training`
-#'  argument of `prep.recipe`. `bake.recipe` then applies
-#'  the ilring to new data sets using these means.
+#' @details #' The ALR transform maps a \eqn{D}-part Aitchison-simplex into a \eqn{D - 1} Euclidian vector. The alr is given by
+#' \deqn{\mathrm{alr}(x)_i = \log \left(\frac{x_i}{x_D} \right)}{alr(x)_i = log(x_i / x_D). }
+#'  The `step_alr` chooses the denominator variable name from
+#'  the data used in the `training` argument of `prep.recipe`.
+#'  The function `bake.recipe` then applies
+#'  the ALR transform to new data sets.
 #'
 #' @examples
-#' data(biomass)
-#'
-#' library('compositions')
-#' data(Hydrochem)
+#' library("compositions")
+#' data("Hydrochem")
 #'
 #' recipe(~ ., data = Hydrochem) %>%
 #'   step_alr(all_numeric(), -Code, -Site) %>%
